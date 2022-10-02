@@ -1,13 +1,5 @@
+require 'set'
 class MoviesController < ApplicationController
-
-
-  attr_accessor :all_ratings
-  attr_accessor :ratings_to_show
-
-  def initialize
-	  @all_ratings = Movie.all_ratings
-	  @ratings_to_show = Movie.all_ratings
-  end
 
   def show
     id = params[:id] # retrieve movie ID from URI route
@@ -16,14 +8,18 @@ class MoviesController < ApplicationController
   end
 
   def index
-	  ratings = params[:ratings]
-	  if ratings == nil
-		  @ratings_to_show = []
-	  else
-		  @ratings_to_show = params[:ratings].keys
-  	  end
-	  @movies = Movie.with_ratings(@ratings_to_show)
-	  @movies = Movie.get_order(@movies, params[:sortBy])
+
+    #@movies = Movie.all
+    @all_ratings = Movie.all_ratings
+    @ratings_to_show = Movie.all_ratings
+    ratings = params[:ratings]
+    if ratings == nil
+	    @ratings_to_show = []
+    else
+	    @ratings_to_show = params[:ratings].keys
+    end
+    @movies = Movie.with_ratings(@ratings_to_show)
+    @movies = Movie.get_order(@movies, params[:sortBy])
   end
 
   def new
