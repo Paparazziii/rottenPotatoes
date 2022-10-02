@@ -17,7 +17,7 @@ class MoviesController < ApplicationController
 
   def index
 	  ratings = params[:ratings]
-	  if ratings = nil
+	  if ratings == nil
 		  @ratings_to_show = []
 	  else
 		  @ratings_to_show = params[:ratings].keys
