@@ -12,14 +12,41 @@ class MoviesController < ApplicationController
     #@movies = Movie.all
     @all_ratings = Movie.all_ratings
     @ratings_to_show = Movie.all_ratings
+
+    if params[:home] != nil and params[:home] = 1
+	    session[:ratings] = params[:ratings]
+    else
+	    params[:rating] = session[:ratings]
+	    params[:sortBy] = session[:sortBy]
+    end
+
     ratings = params[:ratings]
+    sortBy = params[:sortBy]
+
+    @sort = sortBy
+    if @sort == nil
+	    @sort = session[:sortBy]
+	    sortBy = @sort
+	    puts @sort
+	    if @sort != nil
+		    params[:home] = 1
+	    end
+    else
+	    session[:sortBy] = @sort
+    end
+
+
     if ratings == nil
-	    @ratings_to_show = []
+	    @ratings_to_show = @all_ratings
     else
 	    @ratings_to_show = params[:ratings].keys
     end
     @movies = Movie.with_ratings(@ratings_to_show)
-    @movies = Movie.get_order(@movies, params[:sortBy])
+    @movies = Movie.get_order(@movies, sortBy)
+
+    if params[:home] == nil or params[:home] != 1
+	    redirect_to movies_path({"home":1, "sortBy": sortBy, "ratings":ratings})
+    end
   end
 
   def new
