@@ -16,7 +16,7 @@ class MoviesController < ApplicationController
     if params[:home] != nil and params[:home] = 1
 	    session[:ratings] = params[:ratings]
     else
-	    params[:rating] = session[:ratings]
+	    params[:ratings] = session[:ratings]
 	    params[:sortBy] = session[:sortBy]
     end
 
